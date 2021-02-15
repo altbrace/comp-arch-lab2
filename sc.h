@@ -5,6 +5,14 @@
 #define SC_H
 #define MEMORY_SIZE 100
 
+/*
+uint8_t FIRST_BIT = 0b00010000;
+uint8_t SECOND_BIT = 0b00001000;
+uint8_t THIRD_BIT = 0b00000100;
+uint8_t FOURTH_BIT = 0b00000010;
+uint8_t FIFTH_BIT = 0b00000001;
+*/
+
 int sc_memoryInit();
 int sc_memorySet(int addr, int val);
 int sc_memoryGet(int addr, int* val);

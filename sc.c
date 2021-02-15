@@ -2,14 +2,8 @@
 #include <stdint.h>
 #include "sc.h"
 
-#define FIRST_BIT 0b00010000
-#define SECOND_BIT 0b00001000
-#define THIRD_BIT 0b00000100
-#define FOURTH_BIT 0b00000010
-#define FIFTH_BIT 0b00000001
-
-extern int memory[100];
-extern uint8_t flags;
+int memory[100];
+uint8_t flags = 0;
 
 int sc_memoryInit() {
 	
@@ -81,7 +75,10 @@ int sc_regSet(uint8_t reg, int value) {
 int sc_regGet(uint8_t reg, int* value) {
 
 	if ((reg & flags) != 0) *value = 1;
-	else return -1;
+	else {
+		*value = 0;
+		return -1;
+	}
 
 	return 0;
 }
