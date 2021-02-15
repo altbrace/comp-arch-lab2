@@ -78,3 +78,33 @@ int sc_regSet(uint8_t reg, int value) {
 	return 0;
 }
 
+int sc_regGet(uint8_t reg, int* value) {
+
+	if ((reg & flags) != 0) *value = 1;
+	else return -1;
+
+	return 0;
+}
+
+int sc_commandEncode(int command, int operand, int* value) {
+	
+	if (command > 76 || command < 10) return -1;
+	if (operand > 127 || operand < 0) return -1;
+
+	*value = 0b000000000000000;
+	*value |= (command << 7);
+	*value |= operand;
+
+	return 0;
+
+}
+
+int sc_commandDecode(int value, int* command, int* operand) {
+
+	if ((value >> 14) != 0) return -1;
+
+	*operand = value & 0b000000001111111;
+	*command = (value >> 7) & 0b000000001111111;
+
+	return 0;
+}
