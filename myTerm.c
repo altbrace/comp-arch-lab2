@@ -1,19 +1,30 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
 #include "myTerm.h"
 
 int mt_clrscr(void) {
 
-	printf("\033[2J");
+	printf("\E[H\E[2J");
 	return 0;
 }
 
 int mt_gotoXY(int x, int y) {
 	
-	char* xs, ys;
-	itoa(x, xs, 10);
-	itoa(y, ys, 10);
+	int rows, cols;
+	mt_getscreensize(&rows, &cols);
+	if (x > rows || y > cols) {
+		x = rows;
+		y = cols;
+	};
+		
+	char* xs = (char*)malloc(sizeof(int));
+	char* ys = (char*)malloc(sizeof(int));
+	sprintf(xs, "%d", x);
+	sprintf(ys, "%d", y);
+//	itoa(x, xs, 10);
+//	itoa(y, ys, 10);
 
 	printf("\033[%s;%sH", xs, ys);
 	return 0;
@@ -31,11 +42,12 @@ int mt_getscreensize(int* rows, int* cols) {
 
 int mt_setfgcolor(enum colors color) {
 	
-	printf("\033[5;%d", color);
+	printf("\033[1;%dm", color);
 	return 0;
 }
 
 int mt_setbgcolor(enum colors color) {
 
-	printf("\u001b")
+	printf("\E[;%dm", color+10);
+	return 0;
 }

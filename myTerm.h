@@ -7,7 +7,7 @@ enum colors {black = 30, red = 31, green = 32,
 	    cyan = 36, white = 37};
 
 int mt_clrscr(void);
-int my_gotoXY(int x, int y);
+int mt_gotoXY(int x, int y);
 int mt_getscreensize(int* rows, int* cols);
 int mt_setfgcolor(enum colors);
 int mt_setbgcolor(enum colors);
