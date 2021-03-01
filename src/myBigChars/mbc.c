@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "../myTerm/myTerm.h"
 
+#define MASK 0b00000000000000000000000000000001
+
 int bc_printA(char* str) {
 	
 	printf("\E(0%s\E(B", str);
@@ -60,7 +62,10 @@ int bc_box(int x1, int y1, int x2, int y2) {
 }
 
 int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgcolor) {
-
+	
+	if (ch < '0' || (ch > '9' && ch < 'a') || ch > 'f')
+		printf("Character '%c' is not supported.\n") return -1;
+	
 	int table[16][2] = {{606348348, 1009001508},
 			    {136845320, 1007159304},
 			    {1006896188, 1008738336},
@@ -71,8 +76,56 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 			    {67372092, 67372036},
 			    {1009001532, 1009001508},
 			    {1009001532, 1006896132},
-			    {1006896188, 
+			    {1006896188, 606348348},
+			    {1008738336, 606348348},
+			    {538976316, 1008738336},
+			    {1006896132, 606348348},
+			    {1008738364, 1008738336},
+			    {1008738364, 538976288}};
+
+	int chnum[2];
+
+	if (ch >= '0' && ch <= '9') chnum = table[ch - '0'];
+	else if (ch >= 'a' && ch <= 'f') chnum = table[ch - 'a' + 10];
+
+	int rows, cols;
+	mt_getscreensize(&rows, &cols);
 	
+	if (x > rows) x = 0;
+	if (y > cols) y = 0;
+	
+	mt_setfgcolor(fgcolor);
+	mt_setbgcolor(bgcolor);
+
+	for (int i = 0; i < rows; i++) printf("\n");	
+	for (int i = 0; i < cols; i++) printf(" ");
+	
+	for (int i = 0; i < 4; i++) {
+		for (int k = 0; k < cols; k++) printf(" ");
+
+		for (int j = 0; j < 8; j++) {
+			
+			if ((chnum[0] & MASK) != 0) bc_printA("a");
+			else printf(" ");
+			chnum[0] >>= 1;
+		}
+		printf("\n");
+	}
+
+	for (int i = 0; i < 4; i++) {
+		for (int k = 0; k < cols; k++) printf(" ");
+
+		for (int j = 0; j < 8; j++) {
+		
+			if ((chnum[1] & MASK) != 0) bc_printA("a");
+			else printf(" ");
+			chnum[1] >>= 1;
+		}
+		printf("\n");
+	}
+
+		
+	return 0;
 }
 
 
