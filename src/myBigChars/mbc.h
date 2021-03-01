@@ -1,11 +1,8 @@
 #include <stdio.h>
+#include "../myTerm/myTerm.h"
 
 #ifndef MBC_H
 #define MBC_H
-
-enum colors {black = 30, red = 31, green = 32,
-            yellow = 33, blue = 34, purple = 35,
-            cyan = 36, white = 37};
 
 int bc_printA(char* str);
 int bc_box(int x1, int y1, int x2, int y2);
