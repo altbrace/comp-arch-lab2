@@ -63,27 +63,29 @@ int bc_box(int x1, int y1, int x2, int y2) {
 
 int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgcolor) {
 	
-	if (ch < '0' || (ch > '9' && ch < 'a') || ch > 'f')
-		printf("Character '%c' is not supported.\n") return -1;
+	if (ch < '0' || (ch > '9' && ch < 'a') || ch > 'f') {
+		printf("Character '%c' is not supported.\n", ch);
+	       	return -1;
+	}
 	
 	int table[16][2] = {{606348348, 1009001508},
-			    {136845320, 1007159304},
-			    {1006896188, 1008738336},
-			    {1006896188, 1006896132},
-			    {1009001508, 67372036},
+			    {269752336, 1007685648},
 			    {1008738364, 1006896132},
-			    {1008738364, 606348348},
-			    {67372092, 67372036},
-			    {1009001532, 1009001508},
-			    {1009001532, 1006896132},
-			    {1006896188, 606348348},
-			    {1008738336, 606348348},
-			    {538976316, 1008738336},
-			    {1006896132, 606348348},
 			    {1008738364, 1008738336},
-			    {1008738364, 538976288}};
+			    {1009001508, 538976288},
+			    {1006896188, 1008738336},
+			    {1006896188, 1009001508},
+			    {538976316, 538976288},
+			    {1009001532, 1009001508},
+			    {1009001532, 1008738336},
+			    {1008738364, 1009001508},
+			    {1006896132, 1009001508},
+			    {67372092, 1006896132},
+			    {1008738336, 1009001508},
+			    {1006896188, 1006896132},
+			    {1006896188, 67372036}};
 
-	int chnum[2];
+	int* chnum = malloc(8);
 
 	if (ch >= '0' && ch <= '9') chnum = table[ch - '0'];
 	else if (ch >= 'a' && ch <= 'f') chnum = table[ch - 'a' + 10];
@@ -97,11 +99,11 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 	mt_setfgcolor(fgcolor);
 	mt_setbgcolor(bgcolor);
 
-	for (int i = 0; i < rows; i++) printf("\n");	
-	for (int i = 0; i < cols; i++) printf(" ");
+	for (int i = 0; i < x; i++) printf("\n");	
+	for (int i = 0; i < y; i++) printf(" ");
 	
 	for (int i = 0; i < 4; i++) {
-		for (int k = 0; k < cols; k++) printf(" ");
+		for (int k = 0; k < y; k++) printf(" ");
 
 		for (int j = 0; j < 8; j++) {
 			
@@ -113,7 +115,7 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 	}
 
 	for (int i = 0; i < 4; i++) {
-		for (int k = 0; k < cols; k++) printf(" ");
+		for (int k = 0; k < y; k++) printf(" ");
 
 		for (int j = 0; j < 8; j++) {
 		
@@ -123,9 +125,20 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 		}
 		printf("\n");
 	}
-
+	
+//	printf("\n");
 		
 	return 0;
 }
 
+void bc_printStr(char* str) {
+	
+	int x = 0;
+	int y = 0;
 
+	while (*str != '\0') {
+		bc_printbigchar(*str, x, y, black, black);
+		str++;
+		x -= 8;
+	}
+}
