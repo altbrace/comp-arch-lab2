@@ -133,12 +133,12 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 
 void bc_printStr(char* str) {
 	
-	int x = 0;
-	int y = 0;
 
-	while (*str != '\0') {
-		bc_printbigchar(*str, x, y, black, black);
-		str++;
-		x -= 8;
-	}
+}
+
+
+
+void bc_writeToFile(char c, int x, int y, enum colors fgcolor, enum colors bgcolor, FILE* file) {
+	
+	
 }
