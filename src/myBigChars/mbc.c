@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../myTerm/myTerm.h"
+#include <string.h>
 
 #define MASK 0b00000000000000000000000000000001
+
 
 int bc_printA(char* str) {
 	
@@ -63,10 +65,6 @@ int bc_box(int x1, int y1, int x2, int y2) {
 
 int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgcolor) {
 	
-	if (ch < '0' || (ch > '9' && ch < 'a') || ch > 'f') {
-		printf("Character '%c' is not supported.\n", ch);
-	       	return -1;
-	}
 	
 	int table[16][2] = {{606348348, 1009001508},
 			    {269752336, 1007685648},
@@ -85,6 +83,11 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 			    {1006896188, 1006896132},
 			    {1006896188, 67372036}};
 
+	if (ch < '0' || (ch > '9' && ch < 'a') || ch > 'f') {
+		printf("Character '%c' is not supported.\n", ch);
+	       	return -1;
+	}
+	
 	int* chnum = malloc(8);
 
 	if (ch >= '0' && ch <= '9') chnum = table[ch - '0'];
@@ -131,7 +134,85 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 	return 0;
 }
 
-void bc_printStr(char* str) {
+void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcolor) {
+	
+		
+	int table[16][2] = {{606348348, 1009001508},
+			    {269752336, 1007685648},
+			    {1008738364, 1006896132},
+			    {1008738364, 1008738336},
+			    {1009001508, 538976288},
+			    {1006896188, 1008738336},
+			    {1006896188, 1009001508},
+			    {538976316, 538976288},
+			    {1009001532, 1009001508},
+			    {1009001532, 1008738336},
+			    {1008738364, 1009001508},
+			    {1006896132, 1009001508},
+			    {67372092, 1006896132},
+			    {1008738336, 1009001508},
+			    {1006896188, 1006896132},
+			    {1006896188, 67372036}};
+
+	int len = strlen(str);
+	int** chnum = malloc(len * 8);
+	
+	for (int i = 0; i < len; i++) {
+
+		if (str[i] < '0' || (str[i] > '9' && str[i] < 'a') || str[i] > 'f') {
+			printf("Character '%c' is not supported.\n", str[i]);
+		       	return;
+		}
+	
+		if (str[i] >= '0' && str[i] <= '9') chnum[i] = table[str[i] - '0'];
+		else if (str[i] >= 'a' && str[i] <= 'f') chnum[i] = table[str[i] - 'a' + 10];
+	}
+
+	int rows, cols;
+	mt_getscreensize(&rows, &cols);
+	
+	if (x > rows) x = 0;
+	if (y > cols) y = 0;
+	
+	mt_setfgcolor(fgcolor);
+	mt_setbgcolor(bgcolor);
+
+	for (int i = 0; i < x; i++) printf("\n");	
+	for (int i = 0; i < y; i++) printf(" ");
+	
+	int buf = 0;
+	for (int i = 0; i < 4; i++) {
+		
+		for (int j = 0; j < len; j++) {
+			buf = chnum[j][0];
+			for (int k = 0; k < y; k++) printf(" ");
+
+			for (int l = 0; l < 8; l++) {
+				if ((buf & MASK) != 0) bc_printA("a");
+				else printf(" ");
+				buf >>= 1;
+			}
+		}
+		printf("\n");
+	}
+
+	
+	for (int i = 0; i < 4; i++) {
+		
+		for (int j = 0; j < len; j++) {
+			buf = chnum[j][1];
+			for (int k = 0; k < y; k++) printf(" ");
+
+			for (int l = 0; l < 8; l++) {
+				if ((buf & MASK) != 0) bc_printA("a");
+				else printf(" ");
+				buf >>= 1;
+			}
+		}
+		printf("\n");
+	}
+
+	printf("\n");
 	
 
 }
