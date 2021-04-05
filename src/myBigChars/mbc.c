@@ -36,13 +36,13 @@ int bc_box(int x1, int y1, int x2, int y2) {
 	}
 	
 	mt_clrscr();
+	mt_gotoXY(x1, y1);
 	
-	for (int i = 0; i < y1; i++) printf(" ");
-
 	bc_printA("l");
 	for (int i = 0; i < (y2 - y1 - 2); i++) bc_printA("q");
 	bc_printA("k");
 	printf("\n");
+	mt_gotoXY(x1, y1);
 	
 	for (int i = 0; i < (x2 - x1 - 2); i++) {
 		for (int j = 0; j < y1; j++) printf(" ");
@@ -50,6 +50,7 @@ int bc_box(int x1, int y1, int x2, int y2) {
 		for (int j = 0; j < (y2 - y1 - 2); j++) printf(" ");
 		bc_printA("x");
 		printf("\n");
+		mt_gotoXY()
 	}
 
 	for (int i = 0; i < y1; i++) printf(" ");
@@ -137,7 +138,7 @@ int bc_printbigchar(char ch, int x, int y, enum colors fgcolor, enum colors bgco
 void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcolor) {
 	
 		
-	int table[16][2] = {{606348348, 1009001508},
+	int table[17][2] = {{606348348, 1009001508},
 			    {269752336, 1007685648},
 			    {1008738364, 1006896132},
 			    {1008738364, 1008738336},
@@ -152,20 +153,22 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 			    {67372092, 1006896132},
 			    {1008738336, 1009001508},
 			    {1006896188, 1006896132},
-			    {1006896188, 67372036}};
+			    {1006896188, 67372036},
+			    {2115508224, 1579134}};
 
 	int len = strlen(str);
 	int** chnum = malloc(len * 8);
 	
 	for (int i = 0; i < len; i++) {
 
-		if (str[i] < '0' || (str[i] > '9' && str[i] < 'a') || str[i] > 'f') {
-			printf("Character '%c' is not supported.\n", str[i]);
-		       	return;
-		}
+//		if (str[i] < '0' || (str[i] > '9' && str[i] < 'a') || str[i] > 'f' || str[i] != '+') {
+//			printf("Character '%c' is not supported.\n", str[i]);
+//		       	return;
+//		}
 	
 		if (str[i] >= '0' && str[i] <= '9') chnum[i] = table[str[i] - '0'];
 		else if (str[i] >= 'a' && str[i] <= 'f') chnum[i] = table[str[i] - 'a' + 10];
+		else chnum[i] = table[16];
 	}
 
 	int rows, cols;
@@ -180,17 +183,17 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 	for (int i = 0; i < x; i++) printf("\n");	
 	for (int i = 0; i < y; i++) printf(" ");
 	
-	int buf = 0;
+	int ch = 0;
 	for (int i = 0; i < 4; i++) {
 		
 		for (int j = 0; j < len; j++) {
-			buf = chnum[j][0];
+			ch = chnum[j][0] >> i * 8;
 			for (int k = 0; k < y; k++) printf(" ");
 
 			for (int l = 0; l < 8; l++) {
-				if ((buf & MASK) != 0) bc_printA("a");
+				if ((ch & MASK) != 0) bc_printA("a");
 				else printf(" ");
-				buf >>= 1;
+				ch >>= 1;
 			}
 		}
 		printf("\n");
@@ -200,13 +203,13 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 	for (int i = 0; i < 4; i++) {
 		
 		for (int j = 0; j < len; j++) {
-			buf = chnum[j][1];
+			ch = chnum[j][1] >> i * 8;
 			for (int k = 0; k < y; k++) printf(" ");
 
 			for (int l = 0; l < 8; l++) {
-				if ((buf & MASK) != 0) bc_printA("a");
+				if ((ch & MASK) != 0) bc_printA("a");
 				else printf(" ");
-				buf >>= 1;
+				ch >>= 1;
 			}
 		}
 		printf("\n");

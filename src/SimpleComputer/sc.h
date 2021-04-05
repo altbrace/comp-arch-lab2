@@ -13,6 +13,7 @@ uint8_t FOURTH_BIT = 0b00000010;
 uint8_t FIFTH_BIT = 0b00000001;
 */
 
+int memory[];
 int sc_memoryInit();
 int sc_memorySet(int addr, int val);
 int sc_memoryGet(int addr, int* val);

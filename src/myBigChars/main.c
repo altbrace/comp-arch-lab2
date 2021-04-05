@@ -18,7 +18,7 @@ void main() {
 //		bc_printbigchar(str[i], 0, 0, blue, red);
 //		printf("\n");
 //	}
-	char* str2 = "121111";
+	char* str2 = "1212111+";
 	bc_printStr(str2, 0, 0, blue, red);
 
 }

@@ -13,21 +13,15 @@ int mt_clrscr(void) {
 int mt_gotoXY(int x, int y) {
 	
 	int rows, cols;
-	mt_getscreensize(&rows, &cols);
-	if (x > rows || y > cols) {
-		x = rows;
-		y = cols;
-	};
-		
-	char* xs = (char*)malloc(sizeof(int));
-	char* ys = (char*)malloc(sizeof(int));
-	sprintf(xs, "%d", x);
-	sprintf(ys, "%d", y);
-//	itoa(x, xs, 10);
-//	itoa(y, ys, 10);
 
-	printf("\033[%s;%sH", xs, ys);
-	return 0;
+	mt_getscreensize(&rows, &cols);
+	if ((y < rows) && (x < cols) && (x >= 0) && (y >= 0))
+	{
+		printf("\E[%d;%dH", y, x);
+		return 0;
+	}
+	else
+		return 1;	
 }
 
 int mt_getscreensize(int* rows, int* cols) {
