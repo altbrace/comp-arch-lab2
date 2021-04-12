@@ -2,12 +2,12 @@
 #include <stdint.h>
 #include "sc.h"
 
-int memory[100];
+int memA[MEMORY_SIZE];
 uint8_t flags = 0;
 
 int sc_memoryInit() {
 	
-	for (int i = 0; i < 100; i++) memory[i] = 0;
+	for (int i = 0; i < 100; i++) memA[i] = 0;
 
 	return 0;
 }
@@ -16,7 +16,7 @@ int sc_memorySet(int addr, int val) {
 	
 	if (addr < 0 || addr > 99) return -1;
 	
-	memory[addr] = val;
+	memA[addr] = val;
 
 	return 0;
 
@@ -26,7 +26,7 @@ int sc_memoryGet(int addr, int* val) {
 	
 	if (addr < 0 || addr > 99) return -1;
 
-	*val = memory[addr];
+	*val = memA[addr];
 
 	return 0;
 }
@@ -36,7 +36,7 @@ int sc_memorySave(char* filename) {
 	FILE* file = fopen(filename, "wb");
 	if (file == NULL) return -1;
 
-	size_t count = fwrite(memory, sizeof(int), 100, file);
+	size_t count = fwrite(memA, sizeof(int), 100, file);
 	fclose(file);
 
 	if (count != 100) return -1;
@@ -49,7 +49,7 @@ int sc_memoryLoad(char* filename) {
 	FILE* file = fopen(filename, "rb");
 	if (file == NULL) return -1;
 
-	size_t count = fread(memory, sizeof(int), 100, file);
+	size_t count = fread(memA, sizeof(int), 100, file);
 	fclose(file);
 
 	if (count != 100) return -1;

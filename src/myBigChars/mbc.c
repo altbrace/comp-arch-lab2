@@ -14,7 +14,7 @@ int bc_printA(char* str) {
 
 }
 
-int bc_box(int x1, int y1, int x2, int y2) {
+int bc_box(int y1, int x1, int y2, int x2) {
 	
 	if (x1 > x2 || y1 > y2) {
 		printf("bc_box: coordinates should be left upper corner (x1, y1) and right bottom corner (x2, y2)\n");
@@ -35,31 +35,25 @@ int bc_box(int x1, int y1, int x2, int y2) {
 		y2 = cols;
 	}
 	
-	mt_clrscr();
-	mt_gotoXY(x1, y1);
+	mt_gotoXY(y1, x1);
 	
 	bc_printA("l");
 	for (int i = 0; i < (y2 - y1 - 2); i++) bc_printA("q");
 	bc_printA("k");
-	printf("\n");
-	mt_gotoXY(x1, y1);
+	mt_gotoXY(y1, x1+1);
 	
 	for (int i = 0; i < (x2 - x1 - 2); i++) {
-		for (int j = 0; j < y1; j++) printf(" ");
 		bc_printA("x");
 		for (int j = 0; j < (y2 - y1 - 2); j++) printf(" ");
 		bc_printA("x");
-		printf("\n");
-		mt_gotoXY()
+		mt_gotoXY(y1, x1+1+i);
 	}
 
-	for (int i = 0; i < y1; i++) printf(" ");
 	bc_printA("m");
 
 	for (int i = 0; i < (y2 - y1 - 2); i++) bc_printA("q");
 
 	bc_printA("j");
-	printf("\n");
 
 	return 0;
 }
