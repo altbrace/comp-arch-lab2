@@ -174,9 +174,11 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 	mt_setfgcolor(fgcolor);
 	mt_setbgcolor(bgcolor);
 
-	for (int i = 0; i < x; i++) printf("\n");	
-	for (int i = 0; i < y; i++) printf(" ");
+//	for (int i = 0; i < x; i++) printf("\n");	
+//	for (int i = 0; i < y; i++) printf(" ");
 	
+	mt_gotoXY(x, y);
+
 	int ch = 0;
 	for (int i = 0; i < 4; i++) {
 		
@@ -190,7 +192,8 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 				ch >>= 1;
 			}
 		}
-		printf("\n");
+//		printf("\n");
+		mt_gotoXY(x, y+i+1);
 	}
 
 	
@@ -206,7 +209,8 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 				ch >>= 1;
 			}
 		}
-		printf("\n");
+//		printf("\n");
+		mt_gotoXY(x, y+i+5);
 	}
 
 	printf("\n");
