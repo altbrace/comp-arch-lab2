@@ -11,5 +11,6 @@ int mt_gotoXY(int x, int y);
 int mt_getscreensize(int* rows, int* cols);
 int mt_setfgcolor(enum colors);
 int mt_setbgcolor(enum colors);
+int mt_colorreset();
 
 #endif

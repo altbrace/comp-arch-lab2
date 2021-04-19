@@ -45,3 +45,10 @@ int mt_setbgcolor(enum colors color) {
 	printf("\E[;%dm", color+10);
 	return 0;
 }
+
+int mt_colorreset() {
+	
+	printf("\E[;0m");
+	printf("\E[1;0m");
+	return 0;
+}

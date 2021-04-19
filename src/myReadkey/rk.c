@@ -1,4 +1,5 @@
 #include "rk.h"
+#include <termios.h>
 
 int rk_readkey(int *key)
 {

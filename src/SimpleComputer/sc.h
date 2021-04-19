@@ -14,6 +14,7 @@ uint8_t FIFTH_BIT = 0b00000001;
 */
 
 extern int memA[];
+extern uint8_t flags;
 int sc_memoryInit();
 int sc_memorySet(int addr, int val);
 int sc_memoryGet(int addr, int* val);

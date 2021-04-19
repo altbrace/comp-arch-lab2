@@ -19,6 +19,6 @@ void main() {
 //		printf("\n");
 //	}
 	char* str2 = "1212111+";
-	bc_printStr(str2, 0, 0, blue, red);
+	bc_printStr(str2, 1, 19, blue, red);
 
 }

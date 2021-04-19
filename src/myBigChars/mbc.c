@@ -184,7 +184,7 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 		
 		for (int j = 0; j < len; j++) {
 			ch = chnum[j][0] >> i * 8;
-			for (int k = 0; k < y; k++) printf(" ");
+//			for (int k = 0; k < y; k++) printf(" ");
 
 			for (int l = 0; l < 8; l++) {
 				if ((ch & MASK) != 0) bc_printA("a");
@@ -201,7 +201,7 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 		
 		for (int j = 0; j < len; j++) {
 			ch = chnum[j][1] >> i * 8;
-			for (int k = 0; k < y; k++) printf(" ");
+//			for (int k = 0; k < y; k++) printf(" ");
 
 			for (int l = 0; l < 8; l++) {
 				if ((ch & MASK) != 0) bc_printA("a");
@@ -212,9 +212,7 @@ void bc_printStr(char* str, int x, int y, enum colors fgcolor, enum colors bgcol
 //		printf("\n");
 		mt_gotoXY(x, y+i+5);
 	}
-
-	printf("\n");
-	
+	mt_colorreset();	
 
 }
 
