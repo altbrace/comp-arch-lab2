@@ -35,16 +35,18 @@ void init() {
 	bc_box(63, 16, 94, 27);
 
 }
-extern int selected;
-int selected = 0;
+extern int ic;
+int ic = 0;
 
-void mem_refresh(int key) {
+void mem_refresh() {
 	
 	mt_gotoXY(2, 2);
 	char memS[100][6];
 	char *str = (char*)malloc(6);
-	
-	
+	enum colors black = black;
+	enum colors white = white;
+	enum colors blue = blue;
+	enum colors red = red;
 	
 	for (int i = 0; i < MEMORY_SIZE; i++) {
 		if (memA[i] < 10) str = "+000";
@@ -56,17 +58,18 @@ void mem_refresh(int key) {
 		else str = "+";
 		
 		sprintf(memS[i], "%s%d", str, memA[i]);
-		enum colors blue = blue;
-		enum colors red = red;
 	}	
-	enum colors black = black;
-	enum colors white = white;	
-	bc_printStr(memS[18], 2, 17, white, black);
+	bc_printStr(memS[ic], 2, 17, white, black);
 
 	for (int i = 0; i < 10; i++) {
 		mt_gotoXY(2, 3+i);
 
-		for (int j = 0; j < 10; j++) printf("%s ", memS[i*10+j]);
+		for (int j = 0; j < 10; j++) {
+			if ((i * 10 + j) == ic) mt_setfgcolor(white);
+			printf("%s ", memS[i*10+j]);
+			mt_colorreset();
+		}
+
 		printf("\n");
 		
 	}
@@ -74,31 +77,35 @@ void mem_refresh(int key) {
 
 void keyworker() {
 	
-	int* key;
+	int key = 0;
 
 	while (1) {
 		mt_gotoXY(1, 29);
-		rk_readkey(key);
+		rk_readkey(&key);
 
-		switch (*key) {
-			case KEY_down:
+		if (key == KEY_down && ic <= 89) ic += 10;
 
-		}
+		else if ((key == KEY_right) && (ic <= 98)) ic += 1;
+
+		else if ((key == KEY_up) && (ic >= 10)) ic -= 10; 
+
+		else if ((key == KEY_left) && (ic >= 1)) ic -= 1;
+			
+		mem_refresh();
+
+		
 	}
 }
+
 void main() {
 	init();
 	memA[5] = 12;
+	memA[10] = 444;
 	memA[18] = 5;
 	memA[3] = 302;
 	memA[88] = 9999;
 	mem_refresh();
 	
-	int* key;
-	
-	while (1) {
-		mt_gotoXY(1, 29);
-		rk_readkey(key);
-	}
-	scanf("%d");
+	keyworker();	
+//	scanf("%d");
 }

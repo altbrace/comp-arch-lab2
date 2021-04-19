@@ -14,7 +14,7 @@ int rk_readkey(int *key)
 	num_read = read(STDIN_FILENO, buf, 15);
 	if (num_read < 0)
 		return -1;
-	buf[num_read] = '\0';
+	buf[num_read + 1] = '\0';
 
 	if (strcmp(buf, "l") == 0) *key = KEY_l;
 	else if (strcmp(buf, "s") == 0) *key = KEY_s;
