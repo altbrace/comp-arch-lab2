@@ -59,13 +59,22 @@ void mem_refresh() {
 		
 		sprintf(memS[i], "%s%d", str, memA[i]);
 	}	
+
 	bc_printStr(memS[ic], 2, 17, white, black);
+	
+	mt_gotoXY(76, 2);
+	printf("%s", memS[ic]);
+
+	mt_gotoXY(76, 6);
+	printf("     ");
+	mt_gotoXY(78, 6);
+	printf("%d", ic);
 
 	for (int i = 0; i < 10; i++) {
 		mt_gotoXY(2, 3+i);
 
 		for (int j = 0; j < 10; j++) {
-			if ((i * 10 + j) == ic) mt_setfgcolor(white);
+			if ((i * 10 + j) == ic) mt_setfgcolor(red);
 			printf("%s ", memS[i*10+j]);
 			mt_colorreset();
 		}
