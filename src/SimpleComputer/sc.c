@@ -88,7 +88,7 @@ int sc_commandEncode(int command, int operand, int* value) {
 	if (command > 76 || command < 10) return -1;
 	if (operand > 99 || operand < 0) return -1;
 
-	*value = 0b000000000000000;
+	*value = 0b10000000000000000;
 	*value |= (command << 7);
 	*value |= operand;
 
@@ -98,7 +98,7 @@ int sc_commandEncode(int command, int operand, int* value) {
 
 int sc_commandDecode(int value, int* command, int* operand) {
 
-	if ((value >> 14) != 0) return -1;
+	if ((value >> 16) != 1) return -1;
 
 	*operand = value & 0b000000001111111;
 	*command = (value >> 7) & 0b000000001111111;

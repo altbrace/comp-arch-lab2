@@ -84,12 +84,26 @@ int main(int argc, char **argv) {
 		mc = atoi(mcs);
 		cmd = get_command(cmds);
 		if (ops[0] == '+' || ops[0] == '-') {
+			if (cmd != 99) {
+				printf("Syntax error: line %d: %s\nFor operands use 00-99.\n", ln, line);
+				return -1;
+			}
 			char xbuf[7], sign = ops[0];
 			ops++;
+			if (strlen(ops) != 5) {
+				printf("Syntax error: line %d: %s\nFor integers use format '[+/-]XXXX'.\n", ln, line);
+				return -1;
+			}
 			sprintf(xbuf, "%c0x%s", sign, ops);
 			op = strtol(xbuf, NULL, 16);
 		}
-		else op = atoi(ops);
+		else {
+			op = atoi(ops);
+			if (op < 0 || op > 99) {
+				printf("line %d: %s\nOperand out of bounds (00-99)\n", ln, line);
+				return -1;
+			}
+		}
 
 		if (cmd != 0 && cmd != 99) sc_commandEncode(cmd, op, &encoded);
 		else if (cmd == 99) encoded = op;

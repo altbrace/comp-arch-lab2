@@ -8,13 +8,13 @@
 #include "SimpleComputer/sc.h"
 
 extern int ic, acc, halt;
-int ic = 0;
-int acc = 0;
-int halt = 0;
-uint8_t flags = 0;
+int ic;
+int acc;
+int halt;
+uint8_t flags;
 
 void init() {
-
+	
 	system("resize -s 27 95");
 	system("clear");
 	
@@ -88,6 +88,18 @@ void mem_refresh() {
 		else {
 			sign = '+';
 			rev = memA[i];
+		}
+
+		if (rev > 0xFFFF) {
+			int a, b;
+			if (sc_commandDecode(rev, &a, &b) == 0) {
+				sign = '*';
+				rev &= 0b1111111111111111;
+			}
+			else {
+				printf("An overflow occurred at memory cell %d.\n", i);
+				exit(-1);
+			}
 		}
 		if (rev <= 0xF) str = "000";
 
@@ -165,7 +177,7 @@ void entrypoint() {
 
 	int key = 0;
 	rk_readkey(&key);
-	if (key == KEY_enter) {
+	if (key == KEY_enter || halt) {
 		raise(SIGUSR1);
 		sc_regSet(FOURTH_BIT, 1);
 		keyworker();
@@ -360,6 +372,7 @@ int ALU(int cmd, int op) {
 
 void mem_load_sat(char* filename) {
 	
+	ic = acc = flags = halt = 0;	
 	FILE* fin = fopen(filename, "rb");
 	if (fin == NULL) {
 		printf("Couldn't read from file '%s'\n", filename);
@@ -380,10 +393,13 @@ void mem_load_sat(char* filename) {
 
 int CU() {
 
-	uint16_t value = memA[ic];
+	int value = memA[ic];
 	int ins = 0, op = 0;
 	if (sc_commandDecode(value, &ins, &op) != 0) return 0;
-	if (ins == 43) return -1;
+	if (ins == 43) {
+		halt = 1;
+		return -1;
+	}
 	
 	ALU(ins, op);
 	return 0;
