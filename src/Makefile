@@ -17,8 +17,8 @@ sat.o: sat.c
 sc.o: SimpleComputer/sc.c
 	gcc -c SimpleComputer/sc.c
 
-rk.o: myReadKey/rk.c
-	gcc -c myReadKey/rk.c
+rk.o: myReadkey/rk.c
+	gcc -c myReadkey/rk.c
 
 mbc.o: myBigChars/mbc.c
 	gcc -c myBigChars/mbc.c
