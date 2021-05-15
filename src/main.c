@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <signal.h>
 #include <sys/time.h>
@@ -157,7 +158,7 @@ void entrypoint() {
 		ic++;
 		if (ic == 100) ic = 0;
 		mem_refresh();
-		sleep(1);
+		usleep(500000);
 		if (CU() == -1) raise(SIGUSR1);
 		mem_refresh();
 	}
@@ -171,10 +172,10 @@ void entrypoint() {
 	signal(SIGALRM, alrmhandler);
 	signal(SIGUSR1, sigusr1handler);
 
-	nval.it_interval.tv_sec = 1;
-	nval.it_interval.tv_usec = 0;
-	nval.it_value.tv_sec = 1;
-	nval.it_value.tv_usec = 0;
+	nval.it_interval.tv_sec = 0;
+	nval.it_interval.tv_usec = 500000;
+	nval.it_value.tv_sec = 0;
+	nval.it_value.tv_usec = 500000;
 	setitimer(ITIMER_REAL, &nval, &oval);
 
 	int key = 0;
