@@ -1,0 +1,15 @@
+92 = +0001
+00 read 90
+01 load 90
+02 store 91
+03 sub 92
+04 jz 11
+05 store 90
+06 load 91
+07 mul 90
+08 store 91
+09 load 90
+10 jump 03
+11 write 91
+12 halt 00
+

@@ -156,6 +156,8 @@ void entrypoint() {
 		
 		ic++;
 		if (ic == 100) ic = 0;
+		mem_refresh();
+		sleep(1);
 		if (CU() == -1) raise(SIGUSR1);
 		mem_refresh();
 	}
@@ -197,7 +199,7 @@ int ALU(int cmd, int op) {
 		case 10: {
 			int k = 0;
 			scanf("%d", &k);
-			if (k >= -0xFFFF && k <= 0xFFFF) memA[ic] = k;
+			if (k >= -0xFFFF && k <= 0xFFFF) memA[op] = k;
 			else sc_regSet(FIRST_BIT, 1);
 			break;
 		}
@@ -236,15 +238,15 @@ int ALU(int cmd, int op) {
 			break;
 
 		case 40:
-			ic = op;
+			ic = op - 1;
 			break;
 
 		case 41:
-			if (acc < 0) ic = op;
+			if (acc < 0) ic = op - 1;
 			break;
 
 		case 42:
-			if (acc == 0) ic = op;
+			if (acc == 0) ic = op - 1;
                         break;
 
 		case 43:
