@@ -27,6 +27,6 @@ myTerm.o: myTerm/myTerm.c
 	gcc -c myTerm/myTerm.c
 
 clean:
-	rm sc.o rk.o mbc.o myTerm.o sat.o
+	rm sc.o rk.o mbc.o myTerm.o sat.o main.o
 
 
